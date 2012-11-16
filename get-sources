@@ -1,7 +1,9 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 
 set -x
 PS4='[ $(date +%T) ] '
+
+cd # home is where the heart is
 
 : == Make sure ~/bin/ exists, and is in $PATH
 
@@ -16,8 +18,7 @@ if ! type repo; then
 fi
 
 : == Download the BeagleBone prebuilt image
-if ! [ -d ~/BeagleBone ]
-  cd
+if ! [ -d ~/BeagleBone ]; then
   curl http://software-dl.ti.com/dsps/dsps_public_sw/sdo_tii/TI_Android_DevKit/TI_Android_GingerBread_2_3_4_DevKit_2_1_1/exports/BeagleBone.tar.gz > /tmp/BeagleBone.tar.gz
   tar -zxvf /tmp/BeagleBone.tar.gz
 fi

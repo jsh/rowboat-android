@@ -25,9 +25,20 @@ popd
 : == Build the android filesystem
 
 : ==== rowboat perf integration
-git clone -b rowboat-gingerbread git://gitorious.org/rowboat/rowboperf.git
+if [ -d rowboatperf ]; then
+  cd rowboatperf
+  git pull
+else
+  git clone -b rowboat-gingerbread git://gitorious.org/rowboat/rowboperf.git
+fi
+
 : ==== vnc integration
-git clone -b rowboat-gingerbread git://gitorious.org/rowboat/droid-vnc-server.git
+if [ -d rowboatperf ]; then
+  cd droid-vnc-server
+  git pull
+else
+  git clone -b rowboat-gingerbread git://gitorious.org/rowboat/droid-vnc-server.git
+fi
 make -j 4 TARGET_PRODUCT=beaglebone OMAPES=4.x
 
 : == Create root filesystem tarball
