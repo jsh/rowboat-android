@@ -1,0 +1,14 @@
+#!/bin/bash -eu
+
+size-it() {
+  printf "Size: "
+  du -s $1
+  printf "Files: "
+  find $1 -type f -print | wc -l
+  printf "Directories: "
+  find $1 -type d -print | wc -l
+  printf "Human size: "
+  du -sh $1
+}
+
+size-it ${1:-.}

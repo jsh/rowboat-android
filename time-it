@@ -1,0 +1,19 @@
+#!/bin/bash -eu
+
+time-it() {
+  outfile=/tmp/$1.time; shift
+  if [ $time_only = 'yes' ]; then
+    time $* > /dev/null
+  else
+    time $*
+  fi &> $outfile
+  echo output in $outfile >&2
+}
+
+if [ $1 == '-t' ]; then
+  time_only=yes; shift
+else
+  time_only=no
+fi
+
+time-it $*

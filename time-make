@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "== make -j $1 =="
+make -j $1 clean &> /dev/null
+time make -j $1 &> /dev/null
+wait
+echo
+exit 0
