@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -x
+PS4='[ $(date +%T) ] '
+
+repo init -u git://gitorious.org/rowboat/manifest.git -m rowboat-gingerbread-am335x.xml
+repo sync

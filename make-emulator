@@ -1,5 +1,0 @@
-#!/bin/bash -eu
-
-repo forall platform/external/qemu -c git checkout aosp/tools_r12
-make -j 16
-emulator -kernel prebuilt/android-arm/kernel/kernel-qemu-armv7

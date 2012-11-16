@@ -1,0 +1,36 @@
+ To generate SD/MMC card to boot Android
+
+These compiled Images can be copied to a SD / MMC card to boot Android on the BeagleBone.
+
+The text file uEnv.txt is required to provide the boot commands and boot arguments.
+
+Generate a text file uEnv.txt with the following contents
+
+  bootargs=console=ttyO0,115200n8 androidboot.console=ttyO0 mem=256M root=/dev/mmcblk0p2 rw rootfstype=ext3 rootwait init=/init ip=off
+  bootcmd=mmc rescan ; fatload mmc 0 81000000 uImage ; bootm 81000000
+  uenvcmd=boot
+
+Copy all the images to one folder
+
+  $ mkdir image_folder
+  $ cp kernel/arch/arm/boot/uImage image_folder
+  $ cp u-boot/u-boot.img image_folder
+  $ cp u-boot/MLO image_folder
+  $ cp out/target/product/beaglebone/rootfs.tar.bz2 image_folder
+  $ cp Media_clips image_folder
+
+NOTE: Get the Media_clips folder from the SD card prebuilt image
+
+  $ cp mkmmc-android.sh image_folder
+
+NOTE: Get the mkmmc-android.sh script from the SD card prebuilt image
+
+Connect an SD card to the Host machine
+
+Invoke the mkmmc-android.sh script to prepare the card for booting
+
+  $ cd image_folder
+  $ sudo ./mkmmc-android.sh <sd card mounted dev folder example:/dev/sdc> MLO u-boot.img uImage uEnv.txt rootfs.tar.bz2 Media_Clips
+
+Wait for the script to complete.
+Safely remove the SD card and put it on the BeagleBone for Booting.
