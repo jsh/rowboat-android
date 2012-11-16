@@ -1,38 +1,41 @@
-#!/bin/bash
+#!/bin/bash -eu
 
-set -ux
+set -x
 PS4='[ $(date +%T) ] '
 
 export PATH=$HOME/rowboat-android/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin:$PATH
 
-ra_top=$HOME/rowboad-android
+ra_top=$HOME/rowboat-android
 cd $ra_top
 
-: Build u-boot
+: == Build u-boot
 pushd u-boot
 make CROSS_COMPILE=arm-eabi- distclean
 make CROSS_COMPILE=arm-eabi- am335x_evm_config
 make CROSS_COMPILE=arm-eabi- 
 popd
 
-: Build the kernel
+: == Build the kernel
 pushd kernel
 make ARCH=arm CROSS_COMPILE=arm-eabi- distclean
 make ARCH=arm CROSS_COMPILE=arm-eabi- beaglebone_android_defconfig
 make ARCH=arm CROSS_COMPILE=arm-eabi- uImage
 popd
 
-: Build the android filesystem
+: == Build the android filesystem
 
-: rowboat perf integration
+: ==== rowboat perf integration
 git clone -b rowboat-gingerbread git://gitorious.org/rowboat/rowboperf.git $ cd rowboperf
-: vnc integration
+: ==== vnc integration
 git clone -b rowboat-gingerbread git://gitorious.org/rowboat/droid-vnc-server.git
 make TARGET_PRODUCT=beaglebone OMAPES=4.x
 
-: Create root filesystem tarball
+: == Create root filesystem tarball
 cd out/target/product/beaglebone
 mkdir android_rootfs
 cp -r root/* android_rootfs
 cp -r system android_rootfs
 sudo ../../../../build/tools/mktarball.sh ../../../host/linux-x86/bin/fs_get_stats android_rootfs . rootfs rootfs.tar.bz2
+
+: == Success
+exit 0
