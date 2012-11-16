@@ -25,7 +25,7 @@ popd
 : == Build the android filesystem
 
 : ==== rowboat perf integration
-if [ -d rowboatperf ]; then
+if [ -d rowboperf ]; then
   cd rowboatperf
   git pull
 else
@@ -33,7 +33,7 @@ else
 fi
 
 : ==== vnc integration
-if [ -d rowboatperf ]; then
+if [ -d droid-vnc-server ]; then
   cd droid-vnc-server
   git pull
 else
