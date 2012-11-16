@@ -1,5 +1,8 @@
 #!/bin/bash -eux
 
+set -x
+PS4='[ $(date +%T) ] '
+
 : == Generate SD/MMC card to boot Android
 
 : ==== provide the boot commands and boot arguments.
@@ -12,22 +15,23 @@ __EOF__
 
 : ==== copy all the images to one folder
 
-mkdir image_folder
-cp kernel/arch/arm/boot/uImage image_folder
-cp u-boot/u-boot.img image_folder
-cp u-boot/MLO image_folder
-cp out/target/product/beaglebone/rootfs.tar.bz2 image_folder
+[ -d image_folder/ ] || mkdir image_folder/
+cp kernel/arch/arm/boot/uImage image_folder/
+cp u-boot/u-boot.img image_folder/
+cp u-boot/MLO image_folder/
+cp out/target/product/beaglebone/rootfs.tar.bz2 image_folder/
+cp uEnv.txt image_folder/
 
-: ==== get the Media_clips folder and the mkmmc-android.sh script from the SD card prebuilt image
+: ==== get the Media_Clips folder and the mkmmc-android.sh script from the SD card prebuilt image
 
-cp Media_clips image_folder
-cp mkmmc-android.sh image_folder
+cp -a ~/BeagleBone/Media_Clips/ image_folder/
+cp ~/BeagleBone/mkmmc-android.sh image_folder/
 
 : == Connect an SD card to the Host machine and prepare the card for booting
 
 sd_card_mounted_dev_folder=/dev/sdc
 mount | grep $sd_card_mounted_dev_folder
-cd image_folder
+cd image_folder/
 sudo ./mkmmc-android.sh $sd_card_mounted_dev_folder MLO u-boot.img uImage uEnv.txt rootfs.tar.bz2 Media_Clips
 
 : == Safely remove the SD card and put it on the BeagleBone for Booting.

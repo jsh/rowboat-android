@@ -12,23 +12,23 @@ cd $ra_top
 pushd u-boot
 make CROSS_COMPILE=arm-eabi- distclean
 make CROSS_COMPILE=arm-eabi- am335x_evm_config
-make CROSS_COMPILE=arm-eabi- 
+make -j 4 CROSS_COMPILE=arm-eabi- 
 popd
 
 : == Build the kernel
 pushd kernel
 make ARCH=arm CROSS_COMPILE=arm-eabi- distclean
 make ARCH=arm CROSS_COMPILE=arm-eabi- beaglebone_android_defconfig
-make ARCH=arm CROSS_COMPILE=arm-eabi- uImage
+make -j 4 ARCH=arm CROSS_COMPILE=arm-eabi- uImage
 popd
 
 : == Build the android filesystem
 
 : ==== rowboat perf integration
-git clone -b rowboat-gingerbread git://gitorious.org/rowboat/rowboperf.git $ cd rowboperf
+git clone -b rowboat-gingerbread git://gitorious.org/rowboat/rowboperf.git
 : ==== vnc integration
 git clone -b rowboat-gingerbread git://gitorious.org/rowboat/droid-vnc-server.git
-make TARGET_PRODUCT=beaglebone OMAPES=4.x
+make -j 4 TARGET_PRODUCT=beaglebone OMAPES=4.x
 
 : == Create root filesystem tarball
 cd out/target/product/beaglebone

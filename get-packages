@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -x
+PS4='[ $(date +%T) ] '
+
+: == Point to the right places
+repo='deb http://archive.canonical.com/ lucid partner'
+grep "$repo" /etc/apt/sources.list || add-apt-repository $repo
+repo='deb-src http://archive.canonical.com/ubuntu lucid partner'
+grep "$repo" /etc/apt/sources.list || add-apt-repository $repo
+
+: == Pull the packages
+apt-get update
+apt-get install git-core gnupg sun-java6-jdk flex bison gperf libsdl-dev libesd0-dev libwxgtk2.6-dev build-essential zip curl libncurses5-dev zlib1g-dev minicom tftpd uboot-mkimage expect sun-java6-jdk sun-java6-plugin
+update-java-alternatives -s java-6-sun
+
+: == All done
+exit 0

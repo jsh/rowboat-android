@@ -1,0 +1,56 @@
+# my stuff
+
+# history
+
+## keep lots of history
+export HISTFILESIZE=100000000
+export HISTSIZE=100000
+
+## don't overwrite the history of other sessions currently in progress
+shopt -s histappend
+
+## don't put duplicate lines in the history and ignore same sucessive entries.
+export HISTCONTROL=ignoreboth
+
+# my own aliases
+if [ -f ~/.bash-aliases ]; then
+    source ~/.bash-aliases
+fi
+
+if [ -f ~/.bash-functions ]; then
+    source ~/.bash-functions
+fi
+
+if [ -f ~/.bash_env ]; then
+    source ~/.bash_env
+fi
+
+if [ -f ~/.bash-android ]; then
+    source ~/.bash-android
+fi
+
+shopt -s cdspell dirspell globstar
+set -o vi
+set -o ignoreeof
+
+CDPATH+=".:~"; set -P
+export EDITOR=/usr/bin/vim
+export MANPATH+=:~/man
+#export PAGER="/bin/sh -c \"col -b | view -c 'set ft=man nomod nolist' -\"" 
+
+# make less more friendly for non-text input files, see lesspipe(1)
+if [ -x /usr/bin/lesspipe ]; then
+  eval "$(lesspipe)"
+fi
+
+clear
+
+# android stuff
+export USE_CCACHE=1
+export PATH=$HOME/rowboat-android/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin:$PATH
+
+#echo before: emulator is $(type emulator)
+#. $android_d/build/envsetup.sh
+#echo after: emulator is $(type emulator)
+#CDPATH+=:$android_d
+#alias emulator='emulator -kernel prebuilt/android-arm/kernel/kernel-qemu-armv7'
