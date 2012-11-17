@@ -1,7 +1,11 @@
 #!/bin/bash -eu
 
-set -x
 PS4='[ $(date +%T) ] '
+set -x
+
+: = $0: BEGIN
+
+trap ': = $0: FAIL' ERR
 
 export PATH=$HOME/rowboat-android/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin:$PATH
 
@@ -50,5 +54,5 @@ cp -r root/* android_rootfs
 cp -r system android_rootfs
 sudo ../../../../build/tools/mktarball.sh ../../../host/linux-x86/bin/fs_get_stats android_rootfs . rootfs rootfs.tar.bz2
 
-: == Success
+: = $0: SUCCESS
 exit 0

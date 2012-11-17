@@ -1,7 +1,11 @@
 #!/bin/bash -eu
 
-set -x
 PS4='[ $(date +%T) ] '
+set -x
+
+: = $0: BEGIN
+
+trap ': = $0: FAIL' ERR
 
 : == Point to the right places
 repo='deb http://archive.canonical.com/ lucid partner'
@@ -14,5 +18,5 @@ apt-get update
 apt-get install git-core gnupg sun-java6-jdk flex bison gperf libsdl-dev libesd0-dev libwxgtk2.6-dev build-essential zip curl libncurses5-dev zlib1g-dev minicom tftpd uboot-mkimage expect sun-java6-jdk sun-java6-plugin
 update-java-alternatives -s java-6-sun
 
-: == All done
+: = $0: SUCCESS
 exit 0

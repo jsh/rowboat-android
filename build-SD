@@ -1,9 +1,15 @@
 #!/bin/bash -eu
 
-set -x
 PS4='[ $(date +%T) ] '
+set -x
+
+: = $0: BEGIN
+
+trap ': = $0: FAIL' ERR
 
 : == Generate SD/MMC card to boot Android
+
+cd $HOME/rowboat-android
 
 : ==== provide the boot commands and boot arguments.
 
@@ -35,4 +41,6 @@ cd image_folder/
 sudo ./mkmmc-android.sh $sd_card_mounted_dev_folder MLO u-boot.img uImage uEnv.txt rootfs.tar.bz2 Media_Clips
 
 : == Safely remove the SD card and put it on the BeagleBone for Booting.
+
+: = $0: SUCCESS
 exit 0
