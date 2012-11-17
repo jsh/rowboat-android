@@ -26,16 +26,18 @@ popd
 
 : ==== rowboat perf integration
 if [ -d rowboperf ]; then
-  cd rowboperf
+  pushd rowboperf
   git pull
+  popd
 else
   git clone -b rowboat-gingerbread git://gitorious.org/rowboat/rowboperf.git
 fi
 
 : ==== vnc integration
 if [ -d droid-vnc-server ]; then
-  cd droid-vnc-server
+  pushd droid-vnc-server
   git pull
+  popd
 else
   git clone -b rowboat-gingerbread git://gitorious.org/rowboat/droid-vnc-server.git
 fi
@@ -43,7 +45,7 @@ make -j 4 TARGET_PRODUCT=beaglebone OMAPES=4.x
 
 : == Create root filesystem tarball
 cd out/target/product/beaglebone
-mkdir android_rootfs
+[ -d android_rootfs ] || mkdir android_rootfs
 cp -r root/* android_rootfs
 cp -r system android_rootfs
 sudo ../../../../build/tools/mktarball.sh ../../../host/linux-x86/bin/fs_get_stats android_rootfs . rootfs rootfs.tar.bz2
