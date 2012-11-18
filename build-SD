@@ -1,5 +1,7 @@
 #!/bin/bash -eu
 
+warn-to-screen() { printf "$*" >/dev/tty; }
+
 PS4='[ $(date +%T) ] '
 set -x
 
@@ -11,14 +13,6 @@ trap ': = $0: FAIL' ERR
 
 cd $HOME/rowboat-android
 
-: ==== provide the boot commands and boot arguments.
-
-cat << __EOF__ > uEnv.txt
-bootargs=console=ttyO0,115200n8 androidboot.console=ttyO0 mem=256M root=/dev/mmcblk0p2 rw rootfstype=ext3 rootwait init=/init ip=off
-bootcmd=mmc rescan ; fatload mmc 0 81000000 uImage ; bootm 81000000
-uenvcmd=boot
-__EOF__
-
 : ==== copy all the images to one folder
 
 [ -d image_folder/ ] || mkdir image_folder/
@@ -26,7 +20,14 @@ cp kernel/arch/arm/boot/uImage image_folder/
 cp u-boot/u-boot.img image_folder/
 cp u-boot/MLO image_folder/
 cp out/target/product/beaglebone/rootfs.tar.bz2 image_folder/
-cp uEnv.txt image_folder/
+
+: ==== provide the boot commands and boot arguments.
+
+cat << __EOF__ > image_folder/uEnv.txt
+bootargs=console=ttyO0,115200n8 androidboot.console=ttyO0 mem=256M root=/dev/mmcblk0p2 rw rootfstype=ext3 rootwait init=/init ip=off
+bootcmd=mmc rescan ; fatload mmc 0 81000000 uImage ; bootm 81000000
+uenvcmd=boot
+__EOF__
 
 : ==== get the Media_Clips folder and the mkmmc-android.sh script from the SD card prebuilt image
 
@@ -35,10 +36,22 @@ cp ~/BeagleBone/mkmmc-android.sh image_folder/
 
 : == Connect an SD card to the Host machine and prepare the card for booting
 
-sd_card_mounted_dev_folder=/dev/sdc
-mount | grep $sd_card_mounted_dev_folder
+: ==== get the card mounted as /dev/sdc
+
+micro_SD=/dev/sdc
+
+while true; do
+  if mount | grep -q $micro_SD; then
+    break
+  fi
+  warn-to-screen "Mount an SD card (2Gb or greater) as /dev/sdc\n"
+  warn-to-screen "Press <ENTER> to continue "
+  read
+done
+
+: == Prepare the card for booting
 cd image_folder/
-sudo ./mkmmc-android.sh $sd_card_mounted_dev_folder MLO u-boot.img uImage uEnv.txt rootfs.tar.bz2 Media_Clips
+sudo ./mkmmc-android.sh $micro_SD MLO u-boot.img uImage uEnv.txt rootfs.tar.bz2 Media_Clips <<< y
 
 : == Safely remove the SD card and put it on the BeagleBone for Booting.
 
