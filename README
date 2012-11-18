@@ -1,0 +1,11 @@
+Scripts to set up and build rowboat-android.
+
+These are mostly just copied from the TI instructions and tweaked
+to do things like fix typos.
+
+The subdirectory jsh/ contains files I want in my development environment.
+I doubt anyone else will want them.
+
+The validate-end-to-end.t script runs the build* and get* scripts in the right order.
+
+I include the repo command because, ..., well, ... I do. So there.
