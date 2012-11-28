@@ -47,7 +47,10 @@ clear
 
 # android stuff
 export USE_CCACHE=1
-export PATH=$HOME/rowboat-android/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin:$PATH
+export PATH+=:~/bin
+export AOSP_D=/home/android/dev/TI_Android_GingerBread_2_3_4_AM335x_Sources
+export AOSP_P=/home/android/dev/TI_Android_GingerBread_2_3_4_AM335x_Sources/out/target/product/beaglebone
+#export PATH=$HOME/rowboat-android/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin:$PATH
 
 #echo before: emulator is $(type emulator)
 #. $android_d/build/envsetup.sh

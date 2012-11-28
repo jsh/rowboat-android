@@ -1,5 +1,5 @@
 ~/.% : %
-	echo ln $< $@
+	ln $< $@
 
 default: ~/.vimrc ~/.bash-local ~/.bash-functions
 
