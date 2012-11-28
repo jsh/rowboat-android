@@ -10,7 +10,7 @@ export _r="\[\e[01;31m\]"
 export _g="\[\e[01;32m\]"
 export _n="\[\e[0m\]"
 
-prompt() {
+long-prompt() {
   if [ $? = 0 ]; then
     PS1="\u@\h:\w${_g}\$${_n} "
   else
@@ -19,9 +19,7 @@ prompt() {
   xpwd
 }
 
-export PROMPT_COMMAND=prompt
-
-sprompt() {
+short-prompt() {
   if [ $? = 0 ]; then
     PS1="\u@\h:\W${_g}\$${_n} "
   else
@@ -30,6 +28,25 @@ sprompt() {
   xpwd
 }
 
+no-prompt() {
+  if [ $? = 0 ]; then
+    PS1="${_g}\$${_n} "
+  else
+    PS1="${_r}\$${_n} "
+  fi
+  xpwd
+}
+
+export PROMPT_COMMAND=long-prompt
+
+prompt() {
+  case $1 in
+    none) PROMPT_COMMAND=no-prompt ;;
+    short) PROMPT_COMMAND=short-prompt ;;
+    long) PROMPT_COMMAND=long-prompt ;;
+    *) echo 'usage: prompt [none|short|long]' >&2 ;;
+  esac
+}
 
 cdjob() {
   local d
