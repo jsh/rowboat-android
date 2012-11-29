@@ -21,9 +21,9 @@ long-prompt() {
 
 short-prompt() {
   if [ $? = 0 ]; then
-    PS1="\u@\h:\W${_g}\$${_n} "
+    PS1="\W${_g}\$${_n} "
   else
-    PS1="\u@\h:\W${_r}\$${_n} "
+    PS1="\W${_r}\$${_n} "
   fi
   xpwd
 }
